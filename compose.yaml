@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+
+  # linkyreactapp React front end is not directly exposed to the host
+  # but it is reachable by the gateway through our "internalAppsNetwork" Docker network
+  linkyfront:
+    image: flobtmkg/linkyreactapp:1.0.2
+    #image: linky-react-app:latest
+    container_name: linkyfront
+    environment:
+      # The back-end has to be accessible via the gateway
+      - LINKY_SERVER_HOST=${HARDWARE_LOCAL_IP}
+      - LINKY_SERVER_PROTOCOLE=http
+      - LINKY_SERVER_PORT=${GATEWAY_PORT}
+    networks:
+      - internalAppsNetwork
+    restart: always
+
+  # linkydataserver API Backend is not directly exposed to the host
+  # but is reachable by the gateway through our "internalAppsNetwork" Docker network
+  linkyback:
+    image: flobtmkg/linkydataserver:0.0.3
+    container_name: linkyback
+    environment:
+      - SPRING_R2DBC_URL=r2dbc:h2:file:////database;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
+      - SERVER_PORT=8080
+      #- ALLOW_ORIGINS=http://gateway:80
+      - SPRING_PROFILES_ACTIVE=prod
+    volumes:
+      - ./database:/database
+    networks:
+      - internalAppsNetwork
+    restart: always
+
+  # The nginx gateway dispatch the request to linkyfront or linkyback
+  # regarding to rules in gateway.conf
+  gateway:
+    image: nginx:1.25.3-alpine
+    container_name: gateway
+    ports:
+      - "${GATEWAY_PORT}:80"
+    volumes:
+      - ./gateway.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - internalAppsNetwork
+
+networks:
+  # Internal custom bridge network between applications
+  internalAppsNetwork:
