@@ -4,7 +4,7 @@ services:
   # linkyreactapp React front end is not directly exposed to the host
   # but it is reachable by the gateway through our "internalAppsNetwork" Docker network
   linkyfront:
-    image: flobtmkg/linkyreactapp:1.0.2
+    image: flobtmkg/linkyreactapp:1.0.3
     #image: linky-react-app:latest
     container_name: linkyfront
     environment:
@@ -19,7 +19,7 @@ services:
   # linkydataserver API Backend is not directly exposed to the host
   # but is reachable by the gateway through our "internalAppsNetwork" Docker network
   linkyback:
-    image: flobtmkg/linkydataserver:0.0.3
+    image: flobtmkg/linkydataserver:0.0.4
     container_name: linkyback
     environment:
       - SPRING_R2DBC_URL=r2dbc:h2:file:////database;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
