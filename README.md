@@ -1,11 +1,10 @@
------------------------------------
-Standard deployment repository :
------------------------------------
+STANDARD DEPLOYMENT REPOSITORY :
+--------------------------------
 
-Infrastructure :
+INFRASTRUCTURE :
 ----------------
 
-The standard deployment procedure consist in mounting 3 software components using Docker Compose : Gateway, Linky-front, Linky-back. Those components are linked together using Docker networks. 
+The standard deployment procedure consist in mounting 3 software components using Docker Compose : Gateway, Linkyfront, Linkyback. Those components are linked together using Docker networks. 
 
     - Gateway : The gateway is a standard Nginx docker image, it's the only component exposed on the host and work as a generic entrypont. All the requests are reverse-proxied to linkyfront or linkyback regarding to the gateway.conf. This way none of your devices or browsers will ever contact the front-end or the back-end directly, you will be able to see all requests from the gateway logs and you can add additional configuration for advance request rules or filtering.
 
@@ -19,7 +18,7 @@ The file named "gateway.conf" contains the Nginx configuration for the gateway.
 A folder named "database" will be created after deployment, it is the location where the datas are persisted on the host disk.
 
 
-Commands :
+COMMANDS :
 ----------
 
-To deploy the application you have install Docker, download this repo, change the values of the ".env" file to fit your system and launch the command : "docker compose up".
+    - To deploy the application you have install Docker, download this repo, change the values of the ".env" file to fit your system and launch the command : "docker compose up".
