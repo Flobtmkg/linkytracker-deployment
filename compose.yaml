@@ -4,7 +4,7 @@ services:
   # linkyreactapp React front end is not directly exposed to the host
   # but it is reachable by the gateway through our "internalAppsNetwork" Docker network
   linkyfront:
-    image: flobtmkg/linkyreactapp:1.0.3
+    image: flobtmkg/linkyreactapp:1.0.4
     #image: linky-react-app:latest
     container_name: linkyfront
     environment:
@@ -43,6 +43,7 @@ services:
       - ./gateway.conf:/etc/nginx/conf.d/default.conf
     networks:
       - internalAppsNetwork
+    restart: always
 
 networks:
   # Internal custom bridge network between applications
