@@ -7,6 +7,8 @@ services:
     image: flobtmkg/linkyreactapp:1.0.10
     #image: flobtmkg/linkyreactapp:latest
     container_name: linkyfront
+    environment:
+      - TZ=Europe/Paris
     networks:
       - internalAppsNetwork
     restart: always
@@ -18,6 +20,8 @@ services:
     #image: flobtmkg/linkydataserver:latest
     container_name: linkyback
     environment:
+      - TZ=Europe/Paris
+      #- SPRING_R2DBC_URL=r2dbc:h2:file:////database/database;INIT=runscript%20from%20'classpath:init.sql'\\;runscript%20from%20'classpath:migration009.sql';DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
       - SPRING_R2DBC_URL=r2dbc:h2:file:////database/database;INIT=runscript%20from%20'classpath:init.sql';DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
       - SERVER_PORT=8080
       - ALLOW_ORIGINS=http://gateway:80
@@ -33,6 +37,8 @@ services:
   gateway:
     image: nginx:1.25.3-alpine
     container_name: gateway
+    environment:
+      - TZ=Europe/Paris
     ports:
       - "80:80"
     volumes:
